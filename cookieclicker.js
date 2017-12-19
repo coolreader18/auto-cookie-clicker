@@ -80,7 +80,7 @@ openOptions = function() {
   });
 }
 
-if (autoActive) {
+if (window.autoActive) {
   openOptions();
 } else {
   autoActive = true;
