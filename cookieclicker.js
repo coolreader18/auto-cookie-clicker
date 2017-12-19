@@ -5,72 +5,7 @@
 // @script https://cdn.jsdelivr.net/npm/js-cookie/src/js.cookie.min.js
 // ==/Bookmarklet==
 
-var autoActive;
-if (autoActive) {
-  openOptions();
-} else {
-  autoActive = true;
-  var JSONopts = Cookies.getJSON("AutoCookieOptions");
-  options = JSONopts ? JSONopts : {
-    bigCookie: true,
-    goldenCookie: true,
-    buying: [],
-    notBuying: [{
-      ind: 0,
-      title: "Cursor"
-    }, {
-      ind: 1,
-      title: "Grandma"
-    }, {
-      ind: 2,
-      title: "Farm"
-    }, {
-      ind: 3,
-      title: "Factory"
-    }, {
-      ind: 4,
-      title: "Mine"
-    }, {
-      ind: 5,
-      title: "Shipment"
-    }, {
-      ind: 6,
-      title: "Alchemy lab"
-    }, {
-      ind: 7,
-      title: "Portal"
-    }, {
-      ind: 8,
-      title: "Time machine"
-    }, {
-      ind: 9,
-      title: "Antimatter condenser"
-    }]
-  };
-  updateCookie();
-}
-
-setInterval(function() {
-  if (options.bigCookie) {
-    $("#bigCookie").click();
-  }
-  if (options.goldenCookie) {
-    $("#goldenCookie").click();
-  }
-  var buy = options.buying[Symbol.iterator]();
-  buyNext();
-
-  function buyNext() {
-    var curitem = $("#product" + buy.next().value.ind + ".enabled");
-    if (curitem.length) {
-      curitem.click();
-    } else {
-      buyNext();
-    }
-  }
-}, 10)
-
-function openOptions() {
+openOptions = function() {
   openOptWin();
   if (optionsWindow) {
     if (!optionsWindow.closed) {
@@ -144,6 +79,70 @@ function openOptions() {
     updateCookie();
   });
 }
+
+if (autoActive) {
+  openOptions();
+} else {
+  autoActive = true;
+  var JSONopts = Cookies.getJSON("AutoCookieOptions");
+  options = JSONopts ? JSONopts : {
+    bigCookie: true,
+    goldenCookie: true,
+    buying: [],
+    notBuying: [{
+      ind: 0,
+      title: "Cursor"
+    }, {
+      ind: 1,
+      title: "Grandma"
+    }, {
+      ind: 2,
+      title: "Farm"
+    }, {
+      ind: 3,
+      title: "Factory"
+    }, {
+      ind: 4,
+      title: "Mine"
+    }, {
+      ind: 5,
+      title: "Shipment"
+    }, {
+      ind: 6,
+      title: "Alchemy lab"
+    }, {
+      ind: 7,
+      title: "Portal"
+    }, {
+      ind: 8,
+      title: "Time machine"
+    }, {
+      ind: 9,
+      title: "Antimatter condenser"
+    }]
+  };
+  updateCookie();
+}
+
+setInterval(function() {
+  if (options.bigCookie) {
+    $("#bigCookie").click();
+  }
+  if (options.goldenCookie) {
+    $("#goldenCookie").click();
+  }
+  var buy = options.buying[Symbol.iterator]();
+  buyNext();
+
+  function buyNext() {
+    var curitem = $("#product" + buy.next().value.ind + ".enabled");
+    if (curitem.length) {
+      curitem.click();
+    } else {
+      buyNext();
+    }
+  }
+}, 10)
 
 function openOptWin() {
   optionsWindow = window.open("", "AutoCookieOptions", "height=600,width=400,status=yes,toolbar=no,menubar=no,location=no");
