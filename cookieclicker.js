@@ -1,32 +1,21 @@
-// ==Bookmarklet==
-// @name Auto Cookie Clicker
-// @author coolreader18
-// @script https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js
-// @script https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js
-// @script https://cdn.jsdelivr.net/npm/js-cookie/src/js.cookie.min.js
-// ==/Bookmarklet==
-
-openOptions = function() {
-  openOptWin();
-  if (optionsWindow) {
-    if (!optionsWindow.closed) {
-      optionsWindow.close();
-    }
-  }
-  openOptWin();
+function openOptions() {
+  var opts = this.options,
+    optionsWindow = openOptWin();
+  $(optionsWindow).focusout(e => {e.target.close()})
   optDoc = optionsWindow.document;
+
   optDoc.title = "AutoCookie Options";
-  var $options = $(optDoc.body);
-  var buying, notBuying;
+  var $options = $(optDoc.body),
+    buying, notBuying;
   $options.append("<h1>AutoCookie Options</h1>")
     .append("<h2>Auto Clicking Options</h2>")
     .append($("<div>")
       .append($("<input type='checkbox' id='bigCookie'>")
-        .prop("checked", options.bigCookie))
+        .prop("checked", opts.bigCookie))
       .append("<label for='bigCookie'>Big Cookie</label>"))
     .append("<br>")
     .append($("<input type='checkbox' id='goldenCookie'>")
-      .prop("checked", options.goldenCookie))
+      .prop("checked", opts.goldenCookie))
     .append("<label for='goldenCookie'>Golden Cookie</label>")
     .append("<h2>Auto Buying Options</h2>")
     .append($("<div>").css("width", "100%")
@@ -58,35 +47,33 @@ openOptions = function() {
     width: 120px;
   }</style>`)
 
-  options.buying.forEach(function(product) {
+  opts.buying.forEach(function(product) {
     buying.append($("<li class='ui-sortable'>").data("object", product).html(product.title));
   })
-  options.notBuying.forEach(function(product) {
+  opts.notBuying.forEach(function(product) {
     notBuying.append($("<li class='ui-sortable'>").data("object", product).html(product.title));
   })
 
   $("#buying, #notbuying", optDoc).sortable({
     connectWith: ".products"
-
   }).disableSelection().on("sortout", function() {
-    options.buying = [];
+    opts.buying = [];
     $("#buying li", optDoc).each(function(i, li) {
-      options.buying.push($(li).data("object"));
+      opts.buying.push($(li).data("object"));
     })
-    options.notBuying = [];
+    opts.notBuying = [];
     $("#notBuying li", optDoc).each(function(i, li) {
-      options.notBuying.push($(li).data("object"));
+      opts.notBuying.push($(li).data("object"));
     })
     updateCookie();
   });
 }
 
-if (window.autoActive) {
+if (this.clicks) {
   openOptions();
 } else {
-  autoActive = true;
   var JSONopts = Cookies.getJSON("AutoCookieOptions");
-  options = JSONopts ? JSONopts : {
+  this.options = JSONopts || {
     bigCookie: true,
     goldenCookie: true,
     buying: [],
@@ -146,7 +133,7 @@ setInterval(function() {
 }, 10)
 
 function openOptWin() {
-  optionsWindow = window.open("", "AutoCookieOptions", "height=600,width=400,status=yes,toolbar=no,menubar=no,location=no");
+  return window.open("", "AutoCookieOptions", "height=600,width=400,status=yes,toolbar=no,menubar=no,location=no");
 }
 
 function updateCookie() {
