@@ -1,3 +1,10 @@
+// ==Bookmarklet==
+// @name Auto Cookie Clicker
+// @author coolreader18
+// @script https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js
+// @script https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js
+// @script https://cdn.jsdelivr.net/npm/js-cookie/src/js.cookie.min.js
+// ==/Bookmarklet==
 function openOptions() {
   var opts = this.options,
     optionsWindow = openOptWin(),
