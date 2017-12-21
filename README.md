@@ -1,4 +1,4 @@
-# auto-cookie-clicker
+# Auto Cookie Clicker
 A dumb thing I made in ~2 hrs after I whipped up a bookmarklet to auto-cookie click for my brother in about 10 seconds.
 
 ## Installation
