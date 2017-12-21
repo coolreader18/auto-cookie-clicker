@@ -85,7 +85,7 @@ if (this.clicks) {
 } else {
   this.options = Cookies.getJSON("AutoCookieOptions") || {
     bigCookie: false,
-    cps: 1,
+    cps: 10,
     goldenCookie: true,
     buying: [],
     notBuying: [{
