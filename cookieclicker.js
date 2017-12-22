@@ -5,7 +5,7 @@
 // @script https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js
 // @script https://cdn.jsdelivr.net/npm/js-cookie/src/js.cookie.min.js
 // ==/Bookmarklet==
-function openOptions() {
+openOptions = function() {
   var opts = this.options,
     optionsWindow = openOptWin(),
     optDoc = optionsWindow.document,
@@ -75,16 +75,16 @@ function openOptions() {
     updateCookie();
   })
   $("#cps", optDoc).change(e => {
-    opts.cps = e.currentTarget.value;
+    opts.cps = Number(e.currentTarget.value);
     updateCookie();
   })
 }
 
 if (this.clicks) {
-  openOptions();
+  openOptions.call(this);
 } else {
   this.options = Cookies.getJSON("AutoCookieOptions") || {
-    bigCookie: false,
+    bigCookie: true,
     cps: 10,
     goldenCookie: true,
     buying: [],
@@ -121,30 +121,29 @@ if (this.clicks) {
     }]
   };
   updateCookie();
+  setInterval((function() {
+    var opts = this.options;
+    if (opts.bigCookie) {
+      for (var i = 0; i < opts.cps / 10; i++) {
+        $("#bigCookie").click();
+      }
+    }
+    if (opts.goldenCookie) {
+      $("#goldenCookie").click();
+    }
+    var buy = opts.buying[Symbol.iterator]();
+    buyNext();
+
+    function buyNext() {
+      var curitem = $("#product" + buy.next().value.ind + ".enabled");
+      if (curitem.length) {
+        curitem.click();
+      } else {
+        buyNext();
+      }
+    }
+  }).bind(this));
 }
-
-setInterval(function() {
-  var opts = this.options;
-  if (opts.bigCookie) {
-    for (var i = 0; i < opts.cps / 10; i++) {
-      $("#bigCookie").click();
-    }
-  }
-  if (opts.goldenCookie) {
-    $("#goldenCookie").click();
-  }
-  var buy = opts.buying[Symbol.iterator]();
-  buyNext();
-
-  function buyNext() {
-    var curitem = $("#product" + buy.next().value.ind + ".enabled");
-    if (curitem.length) {
-      curitem.click();
-    } else {
-      buyNext();
-    }
-  }
-}, 10)
 
 function openOptWin() {
   return window.open("", "AutoCookieOptions", "height=600,width=400,status=yes,toolbar=no,menubar=no,location=no");
