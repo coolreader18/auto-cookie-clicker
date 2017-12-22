@@ -122,6 +122,7 @@ if (this.clicks) {
       title: "Antimatter condenser"
     }]
   };
+  options = this.options;
   updateCookie();
   setInterval(function() {
     var opts = options;
