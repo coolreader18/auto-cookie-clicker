@@ -5,8 +5,10 @@
 // @script https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js
 // @script https://cdn.jsdelivr.net/npm/js-cookie/src/js.cookie.min.js
 // ==/Bookmarklet==
-openOptions = function() {
-  var opts = this.options,
+var options = this.options;
+
+function openOptions() {
+  var opts = options,
     optionsWindow = openOptWin(),
     optDoc = optionsWindow.document,
     $options = $(optDoc.body);
@@ -81,7 +83,7 @@ openOptions = function() {
 }
 
 if (this.clicks) {
-  openOptions.call(this);
+  openOptions();
 } else {
   this.options = Cookies.getJSON("AutoCookieOptions") || {
     bigCookie: true,
@@ -121,8 +123,8 @@ if (this.clicks) {
     }]
   };
   updateCookie();
-  setInterval((function() {
-    var opts = this.options;
+  setInterval(function() {
+    var opts = options;
     if (opts.bigCookie) {
       for (var i = 0; i < opts.cps / 10; i++) {
         $("#bigCookie").click();
@@ -142,7 +144,7 @@ if (this.clicks) {
         buyNext();
       }
     }
-  }).bind(this));
+  });
 }
 
 function openOptWin() {
