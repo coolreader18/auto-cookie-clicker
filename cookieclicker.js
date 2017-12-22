@@ -24,7 +24,7 @@ function openOptions() {
         .append("<label for='bigCookie'>Big Cookie</label>")
         .append("<br>")
         .append($("<label for='cps'>Clicks per second:</label>").css("padding-right", "2px"))
-        .append($("<input id='cps' type='number' min=10 step=10>").css("width", "40px").val(opts.cps)))
+        .append($("<input id='cps' type='number' min=100 step=100>").css("width", "40px").val(opts.cps)))
       .append($("<input type='checkbox' id='goldenCookie'>")
         .prop("checked", opts.goldenCookie))
       .append("<label for='goldenCookie'>Golden Cookie</label>"))
