@@ -127,7 +127,7 @@ if (this.clicks) {
   setInterval(function() {
     var opts = options;
     if (opts.bigCookie) {
-      for (var i = 0; i < opts.cps / 10; i++) {
+      for (var i = 0; i < opts.cps / 100; i++) {
         $("#bigCookie").click();
       }
     }
