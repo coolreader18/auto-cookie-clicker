@@ -49,7 +49,7 @@ function openOptions() {
     "margin-right": "10px"
   }).each(function(i, list) {
     $(list).data("items").forEach(function(item) {
-      $(list).append($("<li>").data("product", item).html(item.title).css({
+      $(list).append($("<li>").attr("data-product", JSON.stringify(item)).text(item.title).css({
         margin: "0 5px 5px 5px",
         padding: "5px",
         "font-size": "1.2em",
@@ -58,7 +58,7 @@ function openOptions() {
     })
   }).sortable({
     connectWith: ".products",
-    out: function() {
+    update: function() {
       $(".products", optDoc).each(function(i, list) {
         var cur = opts[i ? "notBuying" : "buying"] = [];
         $(list).children().each(function(i, li) {
@@ -87,7 +87,7 @@ if (this.clicks) {
 } else {
   this.options = Cookies.getJSON("AutoCookieOptions") || {
     bigCookie: true,
-    cps: 10,
+    cps: 100,
     goldenCookie: true,
     buying: [],
     notBuying: [{
