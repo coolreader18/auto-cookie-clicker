@@ -5,10 +5,15 @@
 // @script https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js
 // @script https://cdn.jsdelivr.net/npm/js-cookie/src/js.cookie.min.js
 // ==/Bookmarklet==
-var options = this.options;
 
-function openOptions() {
-  var opts = options,
+var updateCookie = () => {
+  Cookies.set("AutoCookieOptions", this.options, {
+    expires: 365
+  });
+}
+
+var openOptions = () => {
+  var opts = this.options,
     optionsWindow = openOptWin(),
     optDoc = optionsWindow.document,
     $options = $(optDoc.body);
@@ -122,10 +127,9 @@ if (this.clicks) {
       title: "Antimatter condenser"
     }]
   };
-  options = this.options;
   updateCookie();
-  setInterval(function() {
-    var opts = options;
+  setInterval(() => {
+    var opts = this.options;
     if (opts.bigCookie) {
       for (var i = 0; i < opts.cps / 100; i++) {
         $("#bigCookie").click();
@@ -150,10 +154,4 @@ if (this.clicks) {
 
 function openOptWin() {
   return window.open("", "AutoCookieOptions", "height=600,width=400,status=yes,toolbar=no,menubar=no,location=no");
-}
-
-function updateCookie() {
-  Cookies.set("AutoCookieOptions", options, {
-    expires: 365
-  });
 }
