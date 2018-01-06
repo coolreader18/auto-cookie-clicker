@@ -159,7 +159,9 @@ if (this.clicks) {
       $("#goldenCookie").click();
     }
     var buy = opts.buying[Symbol.iterator]();
-    buyNext();
+    if (opts.buying.length){
+      buyNext();
+    }
     function buyNext() {
       var curitem = $("#product" + buy.next().value.ind + ".enabled");
       if (curitem.length) {
