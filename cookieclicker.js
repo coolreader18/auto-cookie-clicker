@@ -1,27 +1,87 @@
+// ==Bookmarklet==
+// @name Auto Cookie Clicker
+// @author coolreader18
+// @script dir jquery-ui
+// @script dir js-cookie
+// ==/Bookmarklet==
 var updateCookie = () => {
   Cookies.set("AutoCookieOptions", this.options, {
     expires: 365
   });
 };
 
-var openOptions = () => {
-  var opts = this.options, optionsWindow = openOptWin(), optDoc = optionsWindow.document, $options = $(optDoc.body);
+openOptions = () => {
+  var opts = this.options,
+  optionsWindow = openOptWin(),
+  optDoc = optionsWindow.document;
   $(optionsWindow).focusout(e => {
     e.target.close();
   });
-  optDoc.title = "AutoCookie Options";
-  $options.append("<h1>AutoCookie Options</h1>").append("<h2>Auto Clicking Options</h2>").append($("<div>").append($("<p>").append($("<input type='checkbox' id='bigCookie'>").prop("checked", opts.bigCookie)).append("<label for='bigCookie'>Big Cookie</label>").append("<br>").append($("<label for='cps'>Clicks per second:</label>").css("padding-right", "2px")).append($("<input id='cps' type='number' min=100 step=100>").css("width", "40px").val(opts.cps))).append($("<input type='checkbox' id='goldenCookie'>").prop("checked", opts.goldenCookie)).append("<label for='goldenCookie'>Golden Cookie</label>")).append("<h2>Auto Buying Options</h2>").append($("<div>").css("width", "100%").append($("<div>").append("<h3>Buying</h3>").append($("<ol id='buying' class='products'>").data("items", opts.buying))).append($("<div>").append("<h3>Not Buying</h3>").append($("<ol id='notBuying' class='products'>").data("items", opts.notBuying)))).append("<button onclick='window.close()'>Done</button>");
-  $(".products", optDoc).css({
-    border: "1px solid #eee",
-    width: "142px",
-    "min-height": "20px",
-    "list-style-type": "none",
-    margin: "0",
-    padding: "5px 0 0 0",
-    float: "left",
-    "margin-right": "10px"
-  }).each(function(i, list) {
-    $(list).data("items").forEach(function(item) {
+  $(optDoc.head).html(
+`<title>AutoCookie Options</title>
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<style>
+.products {
+  border: 1px solid #eee;
+  width: 142px;
+  min-height: 20px;
+  list-style-type: none;
+  margin: 0;
+  padding: 5px 0 0 0;
+  float: left;
+  margin-right: 10px;
+}
+div {
+  display: inline-block;
+  padding-bottom: 10px;
+}
+#cps {
+  width: 40px;
+}
+</style>`)
+  $(optDoc.body).html(
+`<h1>AutoCookie Options</h1>
+<h2>Auto Clicking Options</h2>
+<div>
+  <p>
+    <input type='checkbox' id='bigCookie' checked='${opts.bigCookie}'>
+    <label for='bigCookie'>Big Cookie</label>
+    <br>
+    <label for='cps'>Clicks per second: </label>
+    <input id='cps'>
+  </p>
+  <p>
+    <input type='checkbox' id='goldenCookie' checked="${opts.goldenCookie}">
+    <label for='goldenCookie'>Golden Cookie</label>
+  </p>
+</div>
+<h2>Auto Buying Options</h2>
+<div style="width: 100%">
+  <div>
+    <h3>Buying</h3>
+    <ol id='buying' class='products' data-items='${JSON.stringify(opts.buying)}'>
+  </div>
+  <div>
+    <h3>Not Buying</h3>
+    <ol id='notBuying' class='products' data-items='${JSON.stringify(opts.notBuying)}'>
+  </div>
+</div>
+<button onclick='window.close()'>Done</button>`);
+  $("#cps", optDoc).spinner({
+    min: 100,
+    step: 100,
+    page: 5
+  }).on("change spin", e => {
+    var cps = $(e.currentTarget);
+    if (!cps.spinner("isValid")) {
+      cps.val(100)
+    }
+    opts.cps = cps.val() / 1;
+    updateCookie();
+  }).val(opts.cps);
+  $(".ui-spinner", optDoc).css("height", "30px");
+  $(".products", optDoc).each(function(i, list) {
+    $(list).data("items").forEach(item => {
       $(list).append($("<li>").attr("data-product", JSON.stringify(item)).text(item.title).css({
         margin: "0 5px 5px 5px",
         padding: "5px",
@@ -41,16 +101,8 @@ var openOptions = () => {
       updateCookie();
     }
   }).disableSelection();
-  $("div", optDoc).css({
-    display: "inline-block",
-    "padding-bottom": "10px"
-  });
   $("input[type='checkbox']", optDoc).change(e => {
     opts[e.currentTarget.id] = e.currentTarget.checked;
-    updateCookie();
-  });
-  $("#cps", optDoc).change(e => {
-    opts.cps = Number(e.currentTarget.value);
     updateCookie();
   });
 };
